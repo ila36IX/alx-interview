@@ -16,6 +16,6 @@ def canUnlockAll(boxes):
 def canUnlockAll_help(boxes, check, i):
     """Check if all the boxes can be unlocked using recursion"""
     for key in boxes[i]:
-        if key >= len(boxes) and check[key] is False:
+        if key <= len(boxes) and check[key] is False:
             check[key] = True
             canUnlockAll_help(boxes, check, key)
