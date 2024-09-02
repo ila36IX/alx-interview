@@ -7,15 +7,19 @@ sequentially from 0 to n - 1 and each box may contain keys to the other boxes.
 
 def canUnlockAll(boxes):
     """Check if all the boxes can be unlocked"""
+    if len(boxes) == 0:
+        return True
     check = [False for _ in boxes]
-    check[0] = True
-    canUnlockAll_help(boxes, check, 0)
+    next_boxes = set([0])
+    seen_boxes = set([])
+    while len(next_boxes):
+        next_boxes_buff = set([])
+        for box_key in next_boxes:
+            for key in boxes[box_key]:
+                if key not in seen_boxes and key < len(boxes):
+                    check[key] = True
+                    next_boxes_buff.add(key)
+            check[box_key] = True
+            seen_boxes.add(box_key)
+            next_boxes = next_boxes_buff
     return all(check)
-
-
-def canUnlockAll_help(boxes, check, i):
-    """Check if all the boxes can be unlocked using recursion"""
-    for key in boxes[i]:
-        if key <= len(boxes) and check[key] is False:
-            check[key] = True
-            canUnlockAll_help(boxes, check, key)
