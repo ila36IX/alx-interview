@@ -3,23 +3,24 @@
 Validate whether a given dataset represents a valid UTF-8 encoding
 """
 
+
 def validUTF8(data):
     """
     Determine if a given data set represents a valid UTF-8 encoding.
-    
+
     Args:
         data (list[int]): A list of integers representing bytes
-    
+
     Returns:
         bool: True if data is a valid UTF-8 encoding, else False
     """
     # Counter for the number of continuation bytes expected
     cont_bytes = 0
-    
+
     for num in data:
         # Ensure we're only looking at the 8 least significant bits
         byte = num & 0xFF
-        
+
         if cont_bytes:
             # Check if this byte is a continuation byte
             if byte >> 6 != 0b10:
@@ -37,6 +38,6 @@ def validUTF8(data):
                 cont_bytes = 3
             else:
                 return False
-    
+
     # All continuation bytes should be accounted for
-    return cont_bytes == 0 
+    return cont_bytes == 0
