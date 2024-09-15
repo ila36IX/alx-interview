@@ -1,5 +1,6 @@
 # N queens
 ![](https://static.dw.com/image/61827454_303.jpg)
+
 **Fischer v. Spassky** The Match of the Century
 > The “0x05. N queens” project is a classic problem in computer science and
 > mathematics, known for its application of the backtracking algorithm to place N
