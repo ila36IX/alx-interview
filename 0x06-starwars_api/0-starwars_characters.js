@@ -1,36 +1,30 @@
 #!/usr/bin/node
 const request = require('request');
-const { argv } = require('node:process');
 
-const movieId = argv[2];
+const movieId = process.argv[2];
+const movieEndpoint = 'https://swapi-api.alx-tools.com/api/films/' + movieId;
 
-function logNames (ListOfNames) {
-  ListOfNames.forEach(name => {
-    console.log(name);
+function sendRequest(characterList, index) {
+  if (characterList.length === index) {
+    return;
+  }
+
+  request(characterList[index], (e, response, b) => {
+    if (e) {
+      console.log(e);
+    } else {
+      console.log(JSON.parse(b).name);
+      sendRequest(characterList, index + 1);
+    }
   });
 }
 
-function getNames (charcters) {
-  return charcters.map(character => {
-    return new Promise((resolve, reject) => {
-      request.get(character, (e, r, b) => {
-        try {
-          const data = JSON.parse(b);
-          resolve(Promise.resolve(data.name));
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
-  });
-}
+request(movieEndpoint, (e, response, b) => {
+  if (e) {
+    console.log(e);
+  } else {
+    const characterList = JSON.parse(b).characters;
 
-const url = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
-request.get(url, (e, r, b) => {
-  if (r.statusCode === 200) {
-    const allCharacters = getNames(JSON.parse(b).characters);
-    Promise.all(allCharacters)
-      .then(names => logNames(names))
-      .catch(e => console.error(e));
+    sendRequest(characterList, 0);
   }
 });
