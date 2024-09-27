@@ -1,0 +1,6 @@
+{
+  "name": "0-starwars_characters.js",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
