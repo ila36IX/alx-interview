@@ -6,34 +6,22 @@ Main file for testing
 
 
 def makeChange(coins, total):
-    """Sort coins in descending order for optimization"""
+    """If the total is 0 or less, return 0 (no coins needed)"""
     if total <= 0:
         return 0
-    # Sort coins in descending order for optimization
-    coins.sort(reverse=True)
-    # Initialize cache
-    cache = {}
 
-    def dfs(remaining):
-        # Base cases
-        if remaining == 0:
-            return 0
-        if remaining < 0:
-            return float('inf')
-        # Check cache
-        if remaining in cache:
-            return cache[remaining]
-        # Try each coin
-        min_coins = float('inf')
-        for coin in coins:
-            if coin > remaining:
-                continue
-            num_coins = dfs(remaining - coin)
-            if num_coins != float('inf'):
-                min_coins = min(min_coins, num_coins + 1)
+    # Initialize dp array to a value larger than any possible number of coins
+    # (e.g., total + 1)
+    dp = [float('inf')] * (total + 1)
 
-        # Cache the result
-        cache[remaining] = min_coins
-        return min_coins
-    result = dfs(total)
-    return result if result != float('inf') else -1
+    # Base case: to make 0 amount, we need 0 coins
+    dp[0] = 0
+
+    # Loop through each coin in the list
+    for coin in coins:
+        for amount in range(coin, total + 1):
+            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
+
+    # If dp[total] is still infinity, we can't make the total with the given
+    # coins
+    return dp[total] if dp[total] != float('inf') else -1
