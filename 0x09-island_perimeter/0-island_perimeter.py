@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 def island_perimeter(grid):
     """The island doesn’t have lakes water inside that isn’t connected tothe
     water surrounding the island."""
